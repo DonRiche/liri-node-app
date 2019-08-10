@@ -1,28 +1,61 @@
-//DOTENV//
 require('dotenv').config()
-var axios = require('axios');
-var fs = require('fs');
-var Spotify = require('node-spotify-api');
-var keys = require("./keys.js");
 
 //SPOTIFY//
+var axios = require('axios');
+var fs = require('fs');
+var keys = require("./keys.js");
+var Spotify = require('node-spotify-api');
 
 var spotify = new Spotify(keys.spotify);
 
+function ArtistObject(artist, songName, link, album) {
+    this.artist = artist;
+    this.songName = songName;
+    this.link = link;
+    this.album = album;
+    this.printInfo = function () {
+        console.log("Artist: " + this.artist + "\nSong: " + this.songName +
+            "\nLink: " + this.link + "\nAlbum: " + this.album);
+        console.log("\n-------------\n");
+    };
+};
 
-spotify.search({ type: 'track', query: songName })
-    .then(function (response) {
-        console.log(response);
+spotify
+    .request('https://api.spotify.com/v1/' + song + '/7yCPwWs66K8Ba5lFuU2bcx')
+    .then(function (data) {
+        ArtistObject.artist = data.artist,
+            ArtistObject.songName = data.name;
+        ArtistObject.link = data.url,
+            ArtistObject.album = data.album
     })
     .catch(function (err) {
-        console.log(err);
+        console.error('Error occurred: ' + err);
     });
 
-var songName = process.argv[2];
+var artist = new ArtistObject(artist, songName, link, album);
+
+artist.printInfo();
+
+var song = process.argv[2];
+
+// Next, we append the text into the "sample.txt" file.
+// If the file didn't exist, then it gets created on the fly.
+fs.appendFile("random.txt", song, function (err) {
+
+    // If an error was experienced we will log it.
+    if (err) {
+        console.log(err);
+    }
+
+    // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+    else {
+        console.log("Content Added!");
+    }
+
+});
 
 //OMDB//
-var axios = require("axios");
-axios.get("http://www.omdbapi.com/?i=" + movieName + "&apikey=6b8d703a").then(
+/*axios.get("http://www.omdbapi.com/?i=" + movieName + "&apikey=6b8d703a").then(
     function (response) {
         console.log("The movie was released: " + response.data);
     })
@@ -46,5 +79,5 @@ axios.get("http://www.omdbapi.com/?i=" + movieName + "&apikey=6b8d703a").then(
 
 var queryUrl = "http://www.omdbapi.com/?i=" + movieName + "&apikey=6b8d703a";
 
-console.log(queryUrl);
+console.log(queryUrl);*/
 
